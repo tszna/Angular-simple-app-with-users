@@ -1,0 +1,39 @@
+td.values {
+  padding-left: 30px;
+}
+
+td.names {
+  font-weight: 900;
+  font-size: 15px;
+}
+
+h1 {
+  text-decoration: underline;
+  width: 192px;
+}
+
+.text-invalid {
+  color: darkred;
+}
+
+input {
+  padding: 8px;
+  margin-bottom: 5px;
+  width: 96%;
+}
+
+/* input.iname {
+  margin-left: 10%;
+}
+
+input.iusername {
+  margin-left: 3%;
+}
+
+input.iemail {
+  margin-left: 11%;
+} */
+
+.mat-raised-button {
+  margin-left: 5px;
+}

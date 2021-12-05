@@ -1,0 +1,69 @@
+table {
+  font-family: arial, sans-serif;
+  border-collapse: collapse;
+  width: 100%;
+}
+
+td, th {
+  border: 1px solid #dddddd;
+  text-align: left;
+  padding: 8px;
+}
+
+th {
+  font-weight: 900;
+  font-size: 20px;
+  color: black;
+}
+
+.name-align {
+  padding: 15px;
+}
+
+tr:nth-child(even) {
+  background-color: honeydew;
+}
+
+th.mat-header-cell:last-of-type, td.mat-cell:last-of-type, td.mat-footer-cell:last-of-type {
+  padding-right: 14px;
+  padding-left: 14px;
+  width: 191px;
+}
+
+button {
+  margin: 3px;
+}
+
+.mat-form-field {
+  font-size: 14px;
+  width: 30%;
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+th.mat-header-cell:first-of-type, td.mat-cell:first-of-type, td.mat-footer-cell:first-of-type {
+  padding-left: 7px;
+  width: 31px;
+}
+
+.ids {
+  padding-left: 7px;
+  width: 31px;
+}
+
+@media only screen and (max-width: 750px) {
+
+  th.mat-header-cell:last-of-type, td.mat-cell:last-of-type, td.mat-footer-cell:last-of-type {
+    width: 120px;
+    padding-left: 11px;
+  }
+
+  .name-align {
+    padding: 4px;
+  }
+
+  button.right-buttons {
+    width: 100%;
+  }
+}

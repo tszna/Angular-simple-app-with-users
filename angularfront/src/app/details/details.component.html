@@ -1,0 +1,64 @@
+<h1 mat-dialog-title>Użytkownik o id {{data.user.id}}</h1>
+<div mat-dialog-content>
+  <form [formGroup]="userForm" *ngIf="isEditMode" (submit)="saveUserData()">
+    <div>
+      <label class="names" for="name">
+        Name:
+      </label>
+
+      <input class="iname" id="name" type="text" formControlName="name">
+      <span *ngIf="userForm.controls.name.getError('required')" class="text-invalid">
+        Pole nie może być puste
+      </span>
+    </div>
+
+    <div>
+      <label class="names" for="username">
+        Username:
+      </label>
+
+      <input class="iusername" id="username" type="text" formControlName="username">
+      <span *ngIf="userForm.controls.username.getError('required')" class="text-invalid">
+        Pole nie może być puste
+      </span>
+    </div>
+
+    <div>
+      <label class="names" for="email">
+        Email:
+      </label>
+
+      <input class="iemail" id="email" type="text" formControlName="email">
+      <span *ngIf="userForm.controls.email.getError('required')" class="text-invalid">
+        Pole nie może być puste
+      </span>
+    </div>
+
+    <button mat-button color="primary" type="submit">Zapisz</button>
+  </form>
+
+  <div *ngIf="!isEditMode">
+    <table>
+      <tr>
+        <td class="names">Imię: </td>
+        <td class="values">{{ data.user.name }}</td>
+      </tr>
+      <tr>
+        <td class="names">Nazwisko: </td>
+        <td class="values">{{ data.user.username }}</td>
+      </tr>
+      <tr>
+        <td class="names">Email: </td>
+        <td class="values">{{ data.user.email }}</td>
+      </tr>
+    </table>
+  </div>
+</div>
+<div mat-dialog-actions>
+  <button mat-raised-button color="warn" (click)="switchEditMode()">
+    Tryb
+    <span *ngIf="isEditMode">podglądu</span>
+    <span *ngIf="!isEditMode">edycji</span>
+  </button>
+  <button mat-raised-button mat-dialog-close color="primary" >Zamknij</button>
+</div>

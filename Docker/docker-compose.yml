@@ -1,0 +1,62 @@
+services:
+  ng-apache:
+    image: httpd:2.4.20
+    container_name: ng-apache
+    tty: true
+    ports:
+      - "5100:80"
+    volumes:
+      - ./angularapi:/var/www/html
+      - ./httpd.conf:/usr/local/apache2/conf/httpd.conf
+    networks:
+      - ng-network
+
+  ng-php:
+    build:
+      dockerfile: Dockerfile
+      context: ./angularapi
+    container_name: ng-php
+    volumes:
+      - ./angularapi:/var/www/html/
+    networks:
+      - ng-network
+
+  ng-mysql:
+    image: mysql:8.0.26
+    container_name: ng-mysql
+    environment:
+      MYSQL_DATABASE: angular
+      MYSQL_USER: angular
+      MYSQL_PASSWORD: angular
+      MYSQL_ALLOW_EMPTY_PASSWORD: "true"
+    ports:
+      - 3306:3306
+    volumes:
+      - ./mysql_data:/var/lib/mysql
+    networks:
+      - ng-network
+
+  ng-phpmyadmin:
+    image: phpmyadmin
+    container_name: ng-phpmyadmin
+    environment:
+      PMA_HOST: ng-mysql
+      PMA_USER: root
+      PMA_PASSWORD: ""
+    ports:
+      - 5080:80
+    networks:
+      - ng-network
+
+  ng-node:
+    build: ./angularfront
+    container_name: ng-node
+    volumes:
+      - ./angularfront:/usr/src/app
+    ports:
+      - '3200:4200'
+    command: bash -c "npm install && ng serve --host 0.0.0.0"
+
+networks:
+  ng-network:
+    driver: "bridge"
