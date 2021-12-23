@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Http\JsonResponse;
+use App\Helpers\APIHelpers;
+use Illuminate\Support\Facades\Log;
 
 class UserController extends Controller
 {
@@ -15,20 +17,41 @@ class UserController extends Controller
      */
     public function getAllUsers(): JsonResponse
     {
-        $users = User::all();
-        return response()->json($users);
-
+        try {
+            $users = User::all();
+            $response = APIHelpers::apiResponse(false, 200, 'Data fetched successfully', $users);
+            return response()->json($response, 200);
+        } catch (\Throwable $e) {
+            $code = uniqid();
+            Log::error('#' . $code . $e->getMessage(), [$e->getTraceAsString(), $e->getCode()]);
+            $response = APIHelpers::apiResponse(true, 400, 'Data fetching failed - ' . $code, null);
+            return response()->json($response, 400);
+        }
     }
 
+    /**
+     * Funkcja aktualizująca dane użytkownika.
+     * @param Request $request
+     * @return JsonResponse
+     */
     public function updateUser(Request $request) {
 
-        $user = User::findOrFail($request->get('id'));
-        $user->name = $request->name;
-        $user->username = $request->username;
-        $user->email = $request->email;
-        $user->save();
+        try {
+            /** @var User $user */
+            $user = User::findOrFail($request->get('id'));
+            $user->name = $request->name;
+            $user->username = $request->username;
+            $user->email = $request->email;
+            $user->save();
 
-        return response()->json('dane zaktualizowane');
+            $response = APIHelpers::apiResponse(false, 200, 'Data updated successfully', null);
+            return response()->json($response, 200);
+        } catch (\Throwable $e) {
+            $code = uniqid();
+            Log::error('#' . $code . $e->getMessage(), [$e->getTraceAsString(), $e->getCode()]);
+            $response = APIHelpers::apiResponse(true, 400, 'Data updated failed - ' . $code, null);
+            return response()->json($response, 400);
+        }
 
     }
 
@@ -39,19 +62,38 @@ class UserController extends Controller
      */
     public function deleteUser(User $user): JsonResponse
     {
-        $user->delete();
-
-        return response()->json(null);
+        try {
+            $user->delete();
+            $response = APIHelpers::apiResponse(false, 200, 'Data deleted successfully', null);
+            return response()->json($response, 200);
+        } catch (\Throwable $e) {
+            $code = uniqid();
+            Log::error('#' . $code . $e->getMessage(), [$e->getTraceAsString(), $e->getCode()]);
+            $response = APIHelpers::apiResponse(true, 400, 'Data deleted failed - #' . $code, null);
+            return response()->json($response, 400);
+        }
     }
 
+    /**
+     * Funkcja usuwająca z bazy danych wielu użytkowników.
+     * @param Request $request
+     * @return JsonResponse
+     */
     public function deleteManyUsers(Request $request) {
 
-        $data = $request->all();
-        collect($data)->map(function ($uid) {
-            return User::find($uid);
-        })->each([$this, 'deleteUser']);
-
-        return response()->json(null);
+        try {
+            $data = $request->all();
+            collect($data)->map(function ($uid) {
+                return User::find($uid);
+            })->each([$this, 'deleteUser']);
+            $response = APIHelpers::apiResponse(false, 200, 'Data deleted successfully', null);
+            return response()->json($response, 200);
+        } catch (\Throwable $e) {
+            $code = uniqid();
+            Log::error('#' . $code . $e->getMessage(), [$e->getTraceAsString(), $e->getCode()]);
+            $response = APIHelpers::apiResponse(true, 400, 'Data deleted failed - #' . $code, null);
+            return response()->json($response, 400);
+        }
     }
 
 

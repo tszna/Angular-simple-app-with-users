@@ -31,7 +31,7 @@ export class MainPageComponent implements OnInit {
   loadFromApi() {
     this.http.get(API_URL).subscribe(
       (usersData: any) => {
-        this.dataSource = new MatTableDataSource(usersData);
+        this.dataSource = new MatTableDataSource(usersData.data);
       });
   }
 
