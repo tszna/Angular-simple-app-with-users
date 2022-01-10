@@ -98,6 +98,6 @@
   <tr class="row-hover" mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
 
   <tr class="mat-row" *matNoDataRow>
-    <td class="mat-cell" colspan="4">Brak danych związanych z frazą "{{input.value}}"</td>
+    <td *ngIf="showNoDataInfo" class="mat-cell" colspan="4">Brak danych związanych z frazą "{{input.value}}"</td>
   </tr>
 </table>

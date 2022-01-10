@@ -27,6 +27,29 @@ class UserController extends Controller
             $response = APIHelpers::apiResponse(true, 400, 'Data fetching failed - ' . $code, null);
             return response()->json($response, 400);
         }
+        
+    }
+
+    /**
+     * Funkcja pobierająca wszystkich użytkowników z limitami.
+     * @return JsonResponse
+     */
+    public function getUsers($page, $limit)
+    {
+        try {
+            $users = User::query()
+                ->offset($page * $limit)
+                ->limit($limit)
+                ->get();
+        
+            $response = APIHelpers::apiResponse(false, 200, 'Data fetched successfully', ['users' => $users, 'pages' => ceil(User::query()->count() / $limit)]);
+            return response()->json($response, 200);
+        } catch (\Throwable $e) {
+            $code = uniqid();
+            Log::error('#' . $code . $e->getMessage(), [$e->getTraceAsString(), $e->getCode()]);
+            $response = APIHelpers::apiResponse(true, 400, 'Data fetching failed - ' . $code, null);
+            return response()->json($response, 400);
+        }
     }
 
     /**

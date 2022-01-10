@@ -51,13 +51,13 @@ export class DetailsComponent implements OnInit {
       .subscribe({
         next: () => {
           console.log('Dane zostały zaktualizowane')
+          this.dialogRef.close({refresh: true});
         },
         error: error => {
           console.error('Pojawił się błąd!', error);
+          this.dialogRef.close();
         }
       });
-
-    this.dialogRef.close();
 
   }
 

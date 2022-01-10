@@ -16,6 +16,7 @@ use App\Http\Controllers\CarController;
 */
 
 Route::get('/user', [UserController::class, 'getAllUsers']);
+Route::get('/user/load/{page}/{limit}', [UserController::class, 'getUsers']);
 Route::delete('/user/{user}', [UserController::class, 'deleteUser']);
 Route::delete('/users', [UserController::class, 'deleteManyUsers']);
 Route::put('/update', [UserController::class, 'updateUser']);

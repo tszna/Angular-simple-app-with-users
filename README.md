@@ -1,12 +1,16 @@
 # Angular simple app with users
 Jest to prosta aplikacja, która wyświetla listę użytkowników z bazy danych MySQL. W aplikacji można usuwać pojedynczego użytkownika, usuwać wielu użytkowników, pokazywać więcej danych o użytkowniku w oknie modalnym, a także edytować dane użytkownika. Po kliknięciu w obrazek, przechodzimy do innej podstrony gdzie możemy przypisać samochód każdemu użytkownikowi z bazy. Do każdej tabeli została dodana wyszukiwarka, która pozwala filtrować dane w tabeli zgodnie z frazą wpisaną w pole wyszukiwania. Większość warstwy frontowej bazuje na angular material. Backend został napisany w frameworku laravel.
-Widok ogólny aplikacji oraz trybu edycji:
+Widok ogólny aplikacji: 
 
-<img src="https://i.imgur.com/Hfdeds2.gif" alt="operation in app">
+<img src="https://i.imgur.com/8H4Mb5e.gif" alt="operation in app">
+
+Widok trybu edycji:
+
+<img src="https://i.imgur.com/cwrXMRK.gif" alt="operation in app">
 
 Widok przypisywania samochodu do użytkownika:
 
-<img src="https://i.imgur.com/J7dHJuQ.gif" alt="operation in app">
+<img src="https://i.imgur.com/PLfcYYO.gif" alt="operation in app">
 
 
 <h4>Uruchomienie projektu</h4>

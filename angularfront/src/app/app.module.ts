@@ -3,6 +3,7 @@ import { BrowserModule } from '@angular/platform-browser';
 import { ReactiveFormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
 import { AppRoutingModule } from './app-routing.module';
+import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
 
 import { AppComponent } from './app.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
@@ -26,6 +27,7 @@ import { UsersCarsComponent } from './users-cars/users-cars.component';
     BrowserAnimationsModule,
     MaterialModule,
     ReactiveFormsModule,
+    MatProgressSpinnerModule,
   ],
   entryComponents: [
     DetailsComponent

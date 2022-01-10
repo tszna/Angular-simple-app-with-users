@@ -17,7 +17,7 @@ export class UsersCarsComponent implements OnInit {
   addCarFormGroup: FormGroup;
   // @ts-ignore
   users: any[];
-
+  showNoDataInfo = false;
   showAddForm: boolean = false;
 
 
@@ -46,7 +46,7 @@ export class UsersCarsComponent implements OnInit {
 
   loadUsers() {
     this.http.get(API_URL + '/user')
-      .subscribe((response: any) => this.users = response);
+      .subscribe((response: any) => this.users = response.data);
   }
 
   switchAddForm() {
@@ -83,7 +83,9 @@ export class UsersCarsComponent implements OnInit {
   loadFromApi() {
     this.http.get(API_URL + '/car').subscribe(
       (usersData: any) => {
-        this.dataSource = new MatTableDataSource(usersData);
+        console.log(usersData);
+        this.dataSource = new MatTableDataSource(usersData.data);
+        this.showNoDataInfo = true;
       });
   }
 

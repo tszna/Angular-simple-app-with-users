@@ -21,6 +21,13 @@ export class MainPageComponent implements OnInit {
   checkedUsers: any[] = [];
   manyToDelete: any[] = [];
 
+  pageNo = 0;
+  pageSize = 2;
+  isLoading = false;
+  pageLimitReached = false;
+  pages = 0;
+  showNoDataInfo = false;
+
   constructor(private http: HttpClient, public dialog: MatDialog, private snackBar: MatSnackBar) {
     this.loadFromApi();
   }
@@ -29,9 +36,14 @@ export class MainPageComponent implements OnInit {
    * Funkcja odpowiedzialna za pobranie danych z API i zapisanie ich do zmiennej dataSource.
    */
   loadFromApi() {
-    this.http.get(API_URL).subscribe(
+    this.isLoading = true;
+    this.http.get(API_URL + `/load/${this.pageNo}/${this.pageSize}`).subscribe(
       (usersData: any) => {
-        this.dataSource = new MatTableDataSource(usersData.data);
+        this.pages = usersData.data.pages;
+        this.dataSource = new MatTableDataSource(usersData.data.users);
+        this.isLoading = false;
+        this.pageLimitReached = (this.pages - this.pageNo - 1) <= 0;
+        this.showNoDataInfo = true;
       });
   }
 
@@ -47,7 +59,7 @@ export class MainPageComponent implements OnInit {
       }
     });
 
-    dialogRef.afterClosed().subscribe(() => this.loadFromApi());
+    dialogRef.afterClosed().subscribe((result) => result?.refresh && this.loadFromApi());
   }
 
   /**
@@ -124,6 +136,27 @@ export class MainPageComponent implements OnInit {
   }
 
   ngOnInit(): void {
+  }
+
+  loadMore(): void {
+    this.isLoading = true;
+    this.pageNo++;
+    this.http.get(API_URL + `/load/${this.pageNo}/${this.pageSize}`).subscribe(
+      (usersData: any) => {
+        this.isLoading = false;
+        const current = this.dataSource.data;
+
+        if (usersData.data.users.length === 0 || usersData.data.users.length < this.pageSize) {
+          this.pageLimitReached = true;
+        }
+        
+        usersData.data.users.forEach((row: any) => {
+          current.push(row);
+        });
+
+        this.dataSource.data = current;
+
+      });
   }
 
 }
