@@ -1,3 +1,48 @@
+/* Add Car button */
+.add_car_btn {
+  appearance: none;
+  background-color: transparent;
+  border: 2px solid #1A1A1A;
+  border-radius: 15px;
+  box-sizing: border-box;
+  color: #3B3B3B;
+  cursor: pointer;
+  display: inline-block;
+  font-family: Roobert,-apple-system,BlinkMacSystemFont,"Segoe UI",Helvetica,Arial,sans-serif,"Apple Color Emoji","Segoe UI Emoji","Segoe UI Symbol";
+  font-size: 16px;
+  font-weight: 600;
+  line-height: normal;
+  margin: 0;
+  min-width: 0;
+  outline: none;
+  text-align: center;
+  text-decoration: none;
+  transition: all 300ms cubic-bezier(.23, 1, 0.32, 1);
+  user-select: none;
+  -webkit-user-select: none;
+  touch-action: manipulation;
+  width: 140px;
+  height: 45px;
+  will-change: transform;
+}
+
+.add_car_btn:disabled {
+  pointer-events: none;
+}
+
+.add_car_btn:hover {
+  color: #fff;
+  background-color: #1A1A1A;
+  box-shadow: rgba(0, 0, 0, 0.25) 0 8px 15px;
+  transform: translateY(-2px);
+}
+
+.add_car_btn:active {
+  box-shadow: none;
+  transform: translateY(0);
+}
+
+/* Tabela */
 table {
   font-family: arial, sans-serif;
   border-collapse: collapse;
@@ -43,42 +88,129 @@ th.mat-header-cell:first-of-type, td.mat-cell:first-of-type, td.mat-footer-cell:
   width: 31px;
 }
 
-.form-style {
-  /* margin-left: 42%;
-  margin-top: 30px; */
+/* Formularz */
+.wrapper {
+  max-width: 600px;
+  width: 100%;
+  margin-left: auto;
+  margin-right: auto;
+  padding: 30px;
+}
+
+.form {
+  width: 100%;
+
+}
+
+.inputfield {
+  margin-bottom: 15px;
   display: flex;
   align-items: center;
-  justify-content: center;
-  flex-direction: column;
-}
-input {
- margin-left: 10px;
 }
 
-#model {
-  margin-left: 11px;
+.wrapper .form .inputfield .textarea {
+  color: #757575;
+  width: 200px;
+  margin-right: 10px;
+  font-size: 14px;
 }
 
-#user {
-  width: 142px;
+.wrapper .form .inputfield .textarea.custom_options {
+  width: 190px;
 }
 
-.form-group {
-  margin-bottom: 5px;
+.wrapper .form .inputfield .input {
+  width: 100%;
+  outline: none;
+  border: 1px solid #d5dbd9;
+  font-size: 15px;
+  padding: 8px 10px;
+  border-radius: 3px;
+  transition: all 0.3s ease;;
 }
 
-.button-submit {
-  background-color: cornflowerblue;
-  padding: 6px;
+.wrapper .form .inputfield .input:focus {
+  border: 1px solid #fec107;
 }
 
-.form-year {
-  margin-left: 26px;
+.wrapper .form .inputfield .custom_select {
+  position: relative;
+  width: 100%;
+  height: 37px;
 }
 
-.form-select {
-  margin-left: 10px;
+.wrapper .form .inputfield .custom_select select {
+  appearance: none;
+  outline: none;
+  width: 100%;
+  height: 100%;
+  padding: 8px 10px;
+  font-size: 15px;
+  border: 1px solid #d5dbd9;
+  border-radius: 3px;
 }
+
+.wrapper .form .inputfield .custom_select select option {
+  margin: 0;
+  padding: 0;
+}
+
+.wrapper .form .inputfield .custom_select select:focus {
+  border: 1px solid #fec107;
+}
+
+.wrapper .form .inputfield .check {
+  width: 15px;
+  height: 15px;
+  position: relative;
+  display: block;
+  cursor: pointer;
+}
+
+.wrapper .form .inputfield .check input[type="checkbox"] {
+  position: absolute;
+  top: 0;
+  left: 0;
+  opacity: 0;
+}
+
+.wrapper .form .inputfield .check .checkmark {
+  width: 15px;
+  height: 15px;
+  border: 1px solid #fec107;
+  display: block;
+  position: relative;
+}
+
+.wrapper .form .inputfield #city_label {
+  font-size: 14px;
+  color: #757575;
+  margin-top: 2px;
+  margin-left: 12px;
+}
+
+.wrapper .form .inputfield .btn {
+  width: 100%;
+  padding: 8px 10px;
+  font-size: 15px;
+  border: 0px;
+  background: #fec107;
+  color: #fff;
+  cursor: pointer;
+  border-radius: 3px;
+  outline: none;
+}
+
+.wrapper .form .inputfield .custom_select:before {
+  content: "";
+  position: absolute;
+  top: 12px;
+  right: 10px;
+  border: 8px solid;
+  border-color: #d5dbd9 transparent transparent transparent;
+  pointer-events: none;
+}
+
 
 @media only screen and (max-width: 750px) {
 

@@ -20,11 +20,20 @@ class Car extends Model
         'brand',
         'model',
         'year_of_premiere',
+        'city_id',
     ];
 
     public function user(): BelongsTo
     {
         return $this->belongsTo(User::class);
+    }
+
+    /**
+     * @return BelongsTo
+     */
+    public function city(): BelongsTo
+    {
+        return $this->belongsTo(City::class);
     }
 
 }

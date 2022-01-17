@@ -6,7 +6,7 @@
 <table mat-table [dataSource]="dataSource" class="mat-elevation-z8">
 
   <ng-container matColumnDef="select">
-    <th mat-header-cell *matHeaderCellDef> <input type="checkbox" (click)="checkAll()" [checked]="checkedUsers.length === dataSource.data.length"> </th>
+    <th mat-header-cell *matHeaderCellDef> <input type="checkbox" (click)="checkAll()" [checked]="dataSource.data.length && checkedUsers.length === dataSource.data.length"> </th>
     <td mat-cell *matCellDef="let element"> <input type="checkbox" (click)="check(element)" [checked]="isChecked(element)">
     </td>
   </ng-container>
@@ -50,8 +50,8 @@
   </mat-progress-spinner>
 </div>
 <button mat-raised-button color="warn" (click)="deleteMany()">Usuń zaznaczone</button>
-<button mat-raised-button color="warn" (click)="loadMore()" [disabled]="isLoading || pageLimitReached">
+<button mat-raised-button color="warn" (click)="loadMore()" [disabled]="isLoading || pageLimitReached" *ngIf="!isInSearchMode" >
   <span *ngIf="isLoading">Loading...</span>
   <span *ngIf="!isLoading">Wczytaj więcej </span>
-  <span *ngIf="!pageLimitReached">({{ pages - pageNo - 1 }})</span>
+  <span *ngIf="!pageLimitReached">({{ pages - loadFrom - 1 }})</span>
 </button>

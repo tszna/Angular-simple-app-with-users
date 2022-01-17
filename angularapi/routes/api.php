@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\CarController;
+use App\Http\Controllers\CountryController;
 
 /*
 |--------------------------------------------------------------------------
@@ -22,3 +23,5 @@ Route::delete('/users', [UserController::class, 'deleteManyUsers']);
 Route::put('/update', [UserController::class, 'updateUser']);
 Route::get('/car', [CarController::class, 'getCars']);
 Route::post('/car', [CarController::class, 'storeCar']);
+Route::get('/country', [CountryController::class, 'getCountries']);
+Route::get('/country/{country}/cities', [CountryController::class, 'getCities']);

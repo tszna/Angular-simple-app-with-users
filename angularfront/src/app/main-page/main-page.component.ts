@@ -21,12 +21,13 @@ export class MainPageComponent implements OnInit {
   checkedUsers: any[] = [];
   manyToDelete: any[] = [];
 
-  pageNo = 0;
-  pageSize = 2;
+  loadFrom = 0;
+  numberOfRowsInTable = 2;
   isLoading = false;
-  pageLimitReached = false;
+  pageLimitReached = true;
   pages = 0;
   showNoDataInfo = false;
+  isInSearchMode = false;
 
   constructor(private http: HttpClient, public dialog: MatDialog, private snackBar: MatSnackBar) {
     this.loadFromApi();
@@ -37,12 +38,12 @@ export class MainPageComponent implements OnInit {
    */
   loadFromApi() {
     this.isLoading = true;
-    this.http.get(API_URL + `/load/${this.pageNo}/${this.pageSize}`).subscribe(
+    this.http.get(API_URL + `/load/${this.loadFrom}/${this.numberOfRowsInTable}`).subscribe(
       (usersData: any) => {
         this.pages = usersData.data.pages;
         this.dataSource = new MatTableDataSource(usersData.data.users);
         this.isLoading = false;
-        this.pageLimitReached = (this.pages - this.pageNo - 1) <= 0;
+        this.pageLimitReached = (this.pages - this.loadFrom - 1) <= 0;
         this.showNoDataInfo = true;
       });
   }
@@ -96,6 +97,8 @@ export class MainPageComponent implements OnInit {
   applyFilter(event: Event) {
     const filterValue = (event.target as HTMLInputElement).value;
     this.dataSource.filter = filterValue.trim().toLowerCase();
+
+    this.isInSearchMode = filterValue.length > 0;
   }
 
   deleteMany() {
@@ -140,13 +143,13 @@ export class MainPageComponent implements OnInit {
 
   loadMore(): void {
     this.isLoading = true;
-    this.pageNo++;
-    this.http.get(API_URL + `/load/${this.pageNo}/${this.pageSize}`).subscribe(
+    this.loadFrom++;
+    this.http.get(API_URL + `/load/${this.loadFrom}/${this.numberOfRowsInTable}`).subscribe(
       (usersData: any) => {
         this.isLoading = false;
         const current = this.dataSource.data;
 
-        if (usersData.data.users.length === 0 || usersData.data.users.length < this.pageSize) {
+        if (usersData.data.users.length === 0 || usersData.data.users.length < this.numberOfRowsInTable) {
           this.pageLimitReached = true;
         }
         
