@@ -53,5 +53,5 @@
 <button mat-raised-button color="warn" (click)="loadMore()" [disabled]="isLoading || pageLimitReached" *ngIf="!isInSearchMode" >
   <span *ngIf="isLoading">Loading...</span>
   <span *ngIf="!isLoading">Wczytaj więcej </span>
-  <span *ngIf="!pageLimitReached">({{ pages - loadFrom - 1 }})</span>
+  <span *ngIf="!pageLimitReached && !isLoading">({{ pages - loadFrom - 1 }})</span>
 </button>

@@ -2,7 +2,7 @@
 Jest to prosta aplikacja, która wyświetla listę użytkowników z bazy danych MySQL. W aplikacji można usuwać pojedynczego użytkownika, usuwać wielu użytkowników, pokazywać więcej danych o użytkowniku w oknie modalnym, a także edytować dane użytkownika. Tabela zawiera przycisk 'wczytaj więcej', po kliknięciu którego zaczytywane są z bazy danych kolejne pozycji do listy. Przy przycisku widoczna jest liczba, która wskazuje ile możliwych kliknięć przycisku 'wczytaj więcej' pozostało do końca danych w bazie danych. Po kliknięciu w obrazek, przechodzimy do innej podstrony gdzie możemy przypisać samochód każdemu użytkownikowi z bazy. Można również dodać informacje w jakim mieście samochód został wyprodukowany, a opcje na liście rozwijanej 'miasto', są zależne od tego, która opcja zostanie wybrana w liście rozwijanej 'państwo'. Do każdej tabeli została dodana wyszukiwarka, która pozwala filtrować dane w tabeli zgodnie z frazą wpisaną w pole wyszukiwania. Większość warstwy frontowej bazuje na angular material. Backend został napisany w frameworku laravel.
 Widok ogólny aplikacji: 
 
-<img src="https://i.imgur.com/8H4Mb5e.gif" alt="operation in app">
+<img src="https://i.imgur.com/Vg17yCK.gif" alt="operation in app">
 
 Widok trybu edycji:
 
