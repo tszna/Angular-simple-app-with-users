@@ -79,12 +79,12 @@ export class UsersCarsComponent implements OnInit {
 
   loadCountries() {
     this.http.get(API_URL + '/country')
-      .subscribe((response: any) => this.countries = response.data.original);
+      .subscribe((response: any) => this.countries = response.data);
   }
 
   loadCities(countryId: any) {
     this.http.get(API_URL + `/country/${countryId}/cities`)
-      .subscribe((response: any) => this.cities = response.data.original);
+      .subscribe((response: any) => this.cities = response.data);
   }
 
   switchAddForm() {

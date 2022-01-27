@@ -47,8 +47,8 @@
     </div>
 
     <div class="inputfield">
-        <input id="city" type="checkbox" formControlName="use_city" checked />
-        <label id="city_label" for="city">Uwzględnij miasto produkcji</label>
+        <input id="selectCity" type="checkbox" formControlName="use_city" checked />
+        <label id="city_label" for="selectCity">Uwzględnij miasto produkcji</label>
     </div>
 
     <div class="inputfield" *ngIf="useCity">
@@ -124,7 +124,7 @@
 
   <ng-container matColumnDef="city">
     <th class="name-align" mat-header-cell *matHeaderCellDef> Miasto produkcji</th>
-    <td class="name-align" mat-cell *matCellDef="let element"> {{element.city}} </td>
+    <td class="name-align" mat-cell *matCellDef="let element"> {{element.city ?? 'Brak danych'}} </td>
   </ng-container>
 
 

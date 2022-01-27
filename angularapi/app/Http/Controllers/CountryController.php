@@ -18,7 +18,7 @@ class CountryController extends Controller
     public function getCountries(): JsonResponse
     {
         try {
-            $countries = response()->json(Country::all());
+            $countries = Country::all();
             $response = APIHelpers::apiResponse(false, 200, 'Data fetched successfully', $countries);
             return response()->json($response, 200);
         } catch (\Throwable $e) {
@@ -36,7 +36,7 @@ class CountryController extends Controller
     public function getCities(Country $country): JsonResponse
     {
         try {
-            $cities = response()->json(City::query()->where('country_id', $country->id)->get());
+            $cities = City::query()->where('country_id', $country->id)->get();
             $response = APIHelpers::apiResponse(false, 200, 'Data fetched successfully', $cities);
             return response()->json($response, 200);
         } catch (\Throwable $e) {
