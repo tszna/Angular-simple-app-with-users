@@ -13,13 +13,21 @@ const API_URL = 'http://localhost:5100/api/user'
   styleUrls: ['./main-page.component.css']
 })
 export class MainPageComponent implements OnInit {
-  title: string = 'angularTraining';
+  title: string = 'angularfront';
   displayedColumns: string[] = ['select', 'Id', 'name', 'username', 'akcje'];
   dataSource: MatTableDataSource<any> = new MatTableDataSource<any>([]);
   rowToDelete: any[] = [];
   errorMessage: string = '';
   checkedUsers: any[] = [];
   manyToDelete: any[] = [];
+
+  loadFrom = 0;
+  numberOfRowsInTable = 2;
+  isLoading = false;
+  pageLimitReached = true;
+  pages = 0;
+  showNoDataInfo = false;
+  isInSearchMode = false;
 
   constructor(private http: HttpClient, public dialog: MatDialog, private snackBar: MatSnackBar) {
     this.loadFromApi();
@@ -29,9 +37,14 @@ export class MainPageComponent implements OnInit {
    * Funkcja odpowiedzialna za pobranie danych z API i zapisanie ich do zmiennej dataSource.
    */
   loadFromApi() {
-    this.http.get(API_URL).subscribe(
+    this.isLoading = true;
+    this.http.get(API_URL + `/load/${this.loadFrom}/${this.numberOfRowsInTable}`).subscribe(
       (usersData: any) => {
-        this.dataSource = new MatTableDataSource(usersData);
+        this.pages = usersData.data.pages;
+        this.dataSource = new MatTableDataSource(usersData.data.users);
+        this.isLoading = false;
+        this.pageLimitReached = (this.pages - this.loadFrom - 1) <= 0;
+        this.showNoDataInfo = true;
       });
   }
 
@@ -47,7 +60,7 @@ export class MainPageComponent implements OnInit {
       }
     });
 
-    dialogRef.afterClosed().subscribe(() => this.loadFromApi());
+    dialogRef.afterClosed().subscribe((result) => result?.refresh && this.loadFromApi());
   }
 
   /**
@@ -84,6 +97,8 @@ export class MainPageComponent implements OnInit {
   applyFilter(event: Event) {
     const filterValue = (event.target as HTMLInputElement).value;
     this.dataSource.filter = filterValue.trim().toLowerCase();
+
+    this.isInSearchMode = filterValue.length > 0;
   }
 
   deleteMany() {
@@ -124,6 +139,27 @@ export class MainPageComponent implements OnInit {
   }
 
   ngOnInit(): void {
+  }
+
+  loadMore(): void {
+    this.isLoading = true;
+    this.loadFrom++;
+    this.http.get(API_URL + `/load/${this.loadFrom}/${this.numberOfRowsInTable}`).subscribe(
+      (usersData: any) => {
+        this.isLoading = false;
+        const current = this.dataSource.data;
+
+        if (usersData.data.users.length === 0 || usersData.data.users.length < this.numberOfRowsInTable) {
+          this.pageLimitReached = true;
+        }
+        
+        usersData.data.users.forEach((row: any) => {
+          current.push(row);
+        });
+
+        this.dataSource.data = current;
+
+      });
   }
 
 }
