@@ -2,9 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import {FormBuilder, FormGroup, Validators} from "@angular/forms";
 import {HttpClient} from "@angular/common/http";
 import {MatTableDataSource} from "@angular/material/table";
-
-
-const API_URL = 'http://localhost:8000/api'
+import { environment } from '../../environments/environment';
 
 @Component({
   selector: 'app-users-cars',
@@ -73,17 +71,17 @@ export class UsersCarsComponent implements OnInit {
   }
 
   loadUsers() {
-    this.http.get(API_URL + '/user')
+    this.http.get(`${environment.api}user`)
       .subscribe((response: any) => this.users = response.data);
   }
 
   loadCountries() {
-    this.http.get(API_URL + '/country')
+    this.http.get(`${environment.api}country`)
       .subscribe((response: any) => this.countries = response.data);
   }
 
   loadCities(countryId: any) {
-    this.http.get(API_URL + `/country/${countryId}/cities`)
+    this.http.get(`${environment.api}country/${countryId}/cities`)
       .subscribe((response: any) => this.cities = response.data);
   }
 
@@ -109,7 +107,7 @@ export class UsersCarsComponent implements OnInit {
       data['city_id'] = this.addCarFormGroup.value.city
     }
 
-    this.http.post(API_URL + '/car', data)
+    this.http.post(`${environment.api}car`, data)
       .subscribe(
         () => {
           console.log('Dodano auto');
@@ -126,7 +124,7 @@ export class UsersCarsComponent implements OnInit {
    * Funkcja odpowiedzialna za pobranie danych z API i zapisanie ich do zmiennej dataSource.
    */
   loadFromApi() {
-    this.http.get(API_URL + '/car').subscribe(
+    this.http.get(`${environment.api}car`).subscribe(
       (usersData: any) => {
         console.log(usersData);
         this.dataSource = new MatTableDataSource(usersData.data);

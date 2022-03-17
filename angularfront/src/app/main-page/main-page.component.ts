@@ -4,8 +4,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { DetailsComponent } from '../details/details.component';
 import { MatTableDataSource } from '@angular/material/table';
 import { MatSnackBar } from '@angular/material/snack-bar';
-
-const API_URL = 'http://localhost:8000/api/user'
+import { environment } from '../../environments/environment';
 
 @Component({
   selector: 'app-main-page',
@@ -38,7 +37,7 @@ export class MainPageComponent implements OnInit {
    */
   loadFromApi() {
     this.isLoading = true;
-    this.http.get(API_URL + `/load/${this.loadFrom}/${this.numberOfRowsInTable}`).subscribe(
+    this.http.get(`${environment.api}user/load/${this.loadFrom}/${this.numberOfRowsInTable}`).subscribe(
       (usersData: any) => {
         this.pages = usersData.data.pages;
         this.dataSource = new MatTableDataSource(usersData.data.users);
@@ -74,7 +73,7 @@ export class MainPageComponent implements OnInit {
       return value.id === rowId.id;
     });
 
-    this.http.delete(API_URL + '/' + this.rowToDelete[0].id)
+    this.http.delete(`${environment.api}user/${this.rowToDelete[0].id}`)
       .subscribe({
         next: () => {
           this.dataSource.data = this.dataSource.data.filter(value => {
@@ -104,7 +103,7 @@ export class MainPageComponent implements OnInit {
   deleteMany() {
     this.manyToDelete = this.dataSource.data.filter(user => this.checkedUsers.includes(user.id));
     this.manyToDelete = this.manyToDelete.map(user => user.id);
-    this.http.delete(API_URL + 's', { body: this.manyToDelete })
+    this.http.delete(`${environment.api}users`, { body: this.manyToDelete })
       .subscribe({
         next: () => {
           console.log('wszystko ok');
@@ -144,7 +143,7 @@ export class MainPageComponent implements OnInit {
   loadMore(): void {
     this.isLoading = true;
     this.loadFrom++;
-    this.http.get(API_URL + `/load/${this.loadFrom}/${this.numberOfRowsInTable}`).subscribe(
+    this.http.get(`${environment.api}user/load/${this.loadFrom}/${this.numberOfRowsInTable}`).subscribe(
       (usersData: any) => {
         this.isLoading = false;
         const current = this.dataSource.data;

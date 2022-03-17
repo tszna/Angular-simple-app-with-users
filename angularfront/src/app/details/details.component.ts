@@ -2,12 +2,11 @@ import { Component, Inject, OnInit } from '@angular/core';
 import {MAT_DIALOG_DATA, MatDialogRef} from "@angular/material/dialog";
 import {FormBuilder, FormGroup, Validators} from "@angular/forms";
 import { HttpClient } from '@angular/common/http';
+import { environment } from '../../environments/environment';
 
 interface DialogData {
   user: any,
 }
-
-const UPDATE_URL = 'http://localhost:8000/api/update'
 
 @Component({
   selector: 'app-details',
@@ -47,7 +46,7 @@ export class DetailsComponent implements OnInit {
       usersData.user.email = this.userForm.value.email;
     }
 
-    this.http.put<any>(UPDATE_URL, usersData.user)
+    this.http.put<any>(`${environment.api}update`, usersData.user)
       .subscribe({
         next: () => {
           console.log('Dane zostały zaktualizowane')
