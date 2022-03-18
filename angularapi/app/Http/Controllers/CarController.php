@@ -5,7 +5,6 @@ namespace App\Http\Controllers;
 use App\Models\Car;
 use Illuminate\Http\Request;
 use Illuminate\Http\JsonResponse;
-use Illuminate\Support\Facades\DB;
 use App\Helpers\APIHelpers;
 use Illuminate\Support\Facades\Log;
 
@@ -19,32 +18,13 @@ class CarController extends Controller
     public function getCars(): JsonResponse
     {
         try {
-            $users = DB::select('SELECT cars.id AS car_id, cars.user_id, cars.brand, cars.model, cars.year_of_premiere, users.*, cities.name as city FROM `cars` JOIN `users` ON users.id = cars.user_id LEFT JOIN `cities` ON cities.id = cars.city_id');
-
-            $users = collect($users)
-            ->map(function ($groupFirst) {
-
-                return [
-                    'id' => $groupFirst->car_id,
-                    'brand' => $groupFirst->brand,
-                    'model' => $groupFirst->model,
-                    'year_of_premiere' => $groupFirst->year_of_premiere,
-                    'created_at' => $groupFirst->created_at,
-                    'updated_at' => $groupFirst->updated_at,
-                    'user' => [
-                                'id' => $groupFirst->id,
-                                'name' => $groupFirst->name,
-                                'username' => $groupFirst->username,
-                                'email' => $groupFirst->email,
-                                'phone' => $groupFirst->phone,
-                                'created_at' => $groupFirst->created_at,
-                                'updated_at' => $groupFirst->updated_at,
-                    ],
-                    'city' => $groupFirst->city
-                    
-                ];
-            })->values()->toArray();
-            $response = APIHelpers::apiResponse(false, 200, 'Data fetched successfully', $users);
+            $carsById = Car::all()->load(['user', 'city', 'votes'])->toArray();
+            $uid = auth()->user()->id;
+            $userIsPaid = (int)auth()->user()->paid === 1;
+            foreach($carsById as &$value) {
+                $value['userCanVote'] = $value['user_id'] != $uid && !(collect($value['votes'])->pluck('user_id')->contains($uid)) && $userIsPaid;
+            }
+            $response = APIHelpers::apiResponse(false, 200, 'Data fetched successfully', array_values($carsById));
             return response()->json($response, 200);
         } catch (\Throwable $e) {
             $code = uniqid();
@@ -82,4 +62,14 @@ class CarController extends Controller
 
     }
 
+    public function voteFor(Car $car, int $positive)
+    {
+        /** @var User $user */
+        $user = auth()->user();
+        $user->votes()->attach($car, [
+            'is_positive' => $positive,
+        ]);
+
+        return response()->json();
+    }
 }

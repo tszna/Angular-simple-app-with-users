@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class AddCityColumnToCarsTable extends Migration
+class CreateVotesTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,8 +13,12 @@ class AddCityColumnToCarsTable extends Migration
      */
     public function up()
     {
-        Schema::table('cars', function (Blueprint $table) {
-            $table->foreignId('city_id')->nullable()->constrained();
+        Schema::create('votes', function (Blueprint $table) {
+            $table->id();
+            $table->foreignId('user_id')->constrained();
+            $table->foreignId('car_id')->constrained();
+            $table->boolean('is_positive');
+            $table->timestamps();
         });
     }
 
@@ -25,8 +29,6 @@ class AddCityColumnToCarsTable extends Migration
      */
     public function down()
     {
-        Schema::table('cars', function (Blueprint $table) {
-            $table->dropConstrainedForeignId('city_id');
-        });
+        Schema::dropIfExists('votes');
     }
 }

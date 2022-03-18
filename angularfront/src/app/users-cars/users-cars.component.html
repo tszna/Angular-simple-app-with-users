@@ -1,6 +1,52 @@
-<button class="add_car_btn" (click)="switchAddForm()">Dodaj samochód</button>
-<div class="wrapper">
-  <form class="form-style form" (submit)="saveCar()" [formGroup]="addCarFormGroup" *ngIf="showAddForm">
+<!-- login form -->
+<div id="loginForm" class="create">
+  <span (click)="hideLoginForm()" class="close">&times;</span>
+  <form [formGroup]="loginFormGroup">
+    
+    <label for="login">Email</label>
+    <input type="text" name="login" id="login" formControlName="login"/>
+    
+
+    
+    <label for="password">Hasło</label>
+    <input type="password" name="password" id="password" formControlName="password"/>
+    
+
+    
+    <button (click)="loginUser()">Zaloguj</button>
+    
+  </form>
+</div>
+<!-- register form -->
+<div id="registerForm" class="create">
+  <span (click)="hideRegisterForm()" class="close">&times;</span>
+  <form [formGroup]="registerFormGroup">
+    
+    <label for="register">name</label>
+    <input type="text" name="name" id="register" formControlName="name"/>
+    
+    <label for="register">email</label>
+    <input type="text" name="email" id="register" formControlName="email"/>
+
+    <label for="password">Hasło</label>
+    <input type="password" name="password" id="password" formControlName="password"/>
+
+    <label for="password_repeat">Powtórz hasło</label>
+    <input type="password" name="password_repeat" id="password_repeat" formControlName="password_repeat"/>
+
+
+    
+    <button (click)="registerUser()">Zarejestruj</button>
+    
+  </form>
+</div>
+
+<button class="add_car_btn" (click)="addCarAnimation()">Dodaj samochód</button>
+<button class="authButtons" (click)="showLoginForm()">Logowanie</button>
+<button class="authButtons" *ngIf="hasToken() == null" (click)="showRegisterForm()">Rejestracja</button>
+<button class="authButtons" *ngIf="hasToken() != null" (click)="logout()">Wyloguj</button>
+<div id="addCarForm" class="wrapper box">
+  <form class="form-style form" (submit)="saveCar()" [formGroup]="addCarFormGroup">
     <div class="inputfield">
       <label class="textarea" for="brand">Marka</label>
 
@@ -89,9 +135,10 @@
   <mat-label>Wyszukaj</mat-label>
   <input matInput (keyup)="applyFilter($event)" placeholder="Podaj poszukiwaną frazę" #input>
 </mat-form-field>
-
+<p class="auth_info" *ngIf="hasToken() == null">Zaloguje się by zobaczyc tabelę</p>
+<p class="auth_info buy" *ngIf="isPaid == false">Kup by głosować</p>
 <table mat-table [dataSource]="dataSource" class="mat-elevation-z8">
-
+  
   <ng-container matColumnDef="Id">
     <th mat-header-cell *matHeaderCellDef> Id </th>
     <td mat-cell *matCellDef="let element"> {{element.id}} </td>
@@ -124,7 +171,27 @@
 
   <ng-container matColumnDef="city">
     <th class="name-align" mat-header-cell *matHeaderCellDef> Miasto produkcji</th>
-    <td class="name-align" mat-cell *matCellDef="let element"> {{element.city ?? 'Brak danych'}} </td>
+    <td class="name-align" mat-cell *matCellDef="let element"> {{element.city.name ?? 'Brak danych'}} </td>
+  </ng-container>
+
+  <ng-container matColumnDef="vote">
+    <th class="name-align" mat-header-cell *matHeaderCellDef> Głosowanie</th>
+    <td class="name-align" mat-cell *matCellDef="let element">       
+      <p *ngIf="element.votes.length !== 0 && positiveVotes(element?.votes).length > 1">{{ positiveVotes(element?.votes).length }} głosów za</p>
+      <p *ngIf="element.votes.length !== 0 && positiveVotes(element?.votes).length == 1">{{ positiveVotes(element?.votes).length }} głos za</p>
+      <p *ngIf="element.votes.length !== 0 && positiveVotes(element?.votes).length == 0">{{ positiveVotes(element?.votes).length }} głosów za</p>
+      <p *ngIf="element.votes.length !== 0 && negativeVotes(element?.votes).length > 1">{{ negativeVotes(element?.votes).length }} głosów przeciw</p>
+      <p *ngIf="element.votes.length !== 0 && negativeVotes(element?.votes).length == 1">{{ negativeVotes(element?.votes).length }} głos przeciw</p>
+      <p *ngIf="element.votes.length !== 0 && negativeVotes(element?.votes).length == 0">{{ negativeVotes(element?.votes).length }} głosów przeciw</p>
+      <span *ngIf="element.userCanVote">
+        <button class="plus" (click)="voteFor(element, 1)" [disabled]="isVoting">
+          +
+        </button>
+        <button class="plus minus" (click)="voteFor(element, 0)" [disabled]="isVoting">
+          -
+        </button>
+      </span>
+    </td>
   </ng-container>
 
 
@@ -135,3 +202,5 @@
     <td *ngIf="showNoDataInfo" class="mat-cell" colspan="4">Brak danych związanych z frazą "{{input.value}}"</td>
   </tr>
 </table>
+
+<div id="logout_info">Wylogowano</div>

@@ -16,12 +16,19 @@ use App\Http\Controllers\CountryController;
 |
 */
 
+Route::group(['middleware' => 'auth:sanctum'], function () {
+    Route::post('/logout', [UserController::class, 'logout']); 
+    Route::get('/vote-for/{car}/{positive}', [CarController::class, 'voteFor']);   
+    Route::get('/car', [CarController::class, 'getCars']);
+});
+
 Route::get('/user', [UserController::class, 'getAllUsers']);
 Route::get('/user/load/{page}/{limit}', [UserController::class, 'getUsers']);
 Route::delete('/user/{user}', [UserController::class, 'deleteUser']);
 Route::delete('/users', [UserController::class, 'deleteManyUsers']);
 Route::put('/update', [UserController::class, 'updateUser']);
-Route::get('/car', [CarController::class, 'getCars']);
 Route::post('/car', [CarController::class, 'storeCar']);
 Route::get('/country', [CountryController::class, 'getCountries']);
 Route::get('/country/{country}/cities', [CountryController::class, 'getCities']);
+Route::post('/register', [UserController::class, 'register']);
+Route::post('/login', [UserController::class, 'login']);

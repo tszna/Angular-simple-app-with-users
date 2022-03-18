@@ -4,6 +4,7 @@ namespace Database\Seeders;
 
 use App\Models\City;
 use App\Models\Country;
+use App\Models\Car;
 use Illuminate\Database\Seeder;
 
 class CountrySeeder extends Seeder
@@ -17,5 +18,6 @@ class CountrySeeder extends Seeder
     {
         Country::factory()->count(10)->create();
         City::factory()->count(200)->create();
+        Car::factory()->count(200)->create();
     }
 }

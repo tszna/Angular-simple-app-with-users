@@ -36,4 +36,8 @@ class Car extends Model
         return $this->belongsTo(City::class);
     }
 
+    public function votes()
+    {
+        return $this->hasMany(Vote::class);
+    }
 }
